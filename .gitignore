@@ -1,0 +1,7 @@
+# ignore npm dependencies
+static/node_modules/*
+
+# ignore virtualenv files
+server/lib/*
+server/local/*
+server/bin/*
