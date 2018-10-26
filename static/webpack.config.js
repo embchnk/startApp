@@ -1,3 +1,11 @@
+const path = require('path');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+
+const htmlPlugin = new HtmlWebPackPlugin({
+    template: "./index.html",
+    filename: "./index.html"
+});
+
 const webpack = require('webpack')
 
 const config = {
@@ -17,9 +25,38 @@ const config = {
                 use: {
                     loader: "babel-loader"
                 }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: 'css-loader'
+                    }
+                ]
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    {
+                        loader: 'style-loader' // creates style nodes from JS strings
+                    },
+                    {
+                        loader: 'css-loader' // translates CSS into CommonJS
+                    },
+                    {
+                        loader: 'less-loader', // compiles Less to CSS
+                        options: {
+                            javascriptEnabled: true
+                        }
+                    }
+                ]
             }
         ]
-    }
+    },
+    plugins: [htmlPlugin]
 };
 
 module.exports = config;
