@@ -1,0 +1,21 @@
+@import '../node_modules/antd/dist/antd.css';
+
+#content {
+  padding: 24px;
+}
+
+.ant-input {
+  min-height: auto !important;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form {
+  max-width: 300px;
+}
+
+.login-form-button {
+  width: 100%;
+}

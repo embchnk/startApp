@@ -7,7 +7,8 @@
     "build": "webpack -p --progress --config webpack.config.js",
     "dev-build": "webpack --progress -d --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --progress -d --config webpack.config.js --watch"
+    "start": "webpack-dev-server --mode development --open -d",
+    "watch": "webpack --progress --color --watch"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,7 @@
     "babel-plugin-import": "^1.7.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "css-loader": "^0.28.11",
+    "css-loader": "^1.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "html-webpack-plugin": "^3.2.0",
@@ -35,14 +36,15 @@
     "less-loader": "^4.1.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
-    "regenerator-runtime": "^0.11.1",
-    "style-loader": "^0.21.0",
+    "regenerator-runtime": "^0.12.1",
+    "style-loader": "^0.23.1",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.1"
   },
   "dependencies": {
-    "antd": "^3.5.3",
+    "antd": "^3.10.3",
     "jquery": "^3.3.1",
+    "react-router-dom": "^4.3.1",
     "webpack-dev-server": "^3.1.9"
   }
 }
