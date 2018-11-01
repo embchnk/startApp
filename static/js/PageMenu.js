@@ -11,6 +11,7 @@ class PageMenu extends React.Component {
     }
 
     handleClick(e) {
+        const self = this;
         if (e.key == 'logout') {
             $.ajax({
                 url: "/logout",
@@ -19,7 +20,7 @@ class PageMenu extends React.Component {
                 }
             });
         } else if (e.key == 'comment') {
-            console.log("Add comment");
+            this.props.setActiveWindow('Comment');
         }
     }
 
@@ -29,7 +30,7 @@ class PageMenu extends React.Component {
             <div>
                 <Menu
                     mode='horizontal'
-                    onClick={this.handleClick.bind(this)}
+                    onClick={this.handleClick}
                 >
                     <Menu.Item key='search'>
                         <Icon type="search" />Search

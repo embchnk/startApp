@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory, session, url_for, redirect
+from flask import Flask, render_template, request, jsonify
+from flask import send_from_directory, session, url_for, redirect
 from flask_session import Session
 import json
 import os
@@ -13,12 +14,31 @@ app.config.from_object(__name__)
 sess = Session()
 sess.init_app(app)
 
+###############################################################################
+# PATHS 
+###############################################################################
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
-    if not session.get('logged_in', False) and path != 'loginPage':
-        return redirect('/loginPage')
+    if not session.get('logged_in', False):
+        return redirect(url_for('loginPage'))
     return render_template('index.html')
+
+@app.route("/loginPage")
+def loginPage():
+    if not session.get('logged_in', False):
+        return render_template('index.html')
+    return redirect('/')
+
+###############################################################################
+# REST API
+###############################################################################
+
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False
+    return ('', 200)
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
@@ -37,12 +57,11 @@ def login():
     else:
         return json.dumps({"status": "failure"})
 
-@app.route("/logout")
-def logout():
-    session['logged_in'] = False
-    if session['logged_in']:
-        return "true"
-    return "false"
+@app.route("/addComment", methods=['POST'])
+def add_comment():
+    data = request.data
+    data = json.loads(data)
+    return json.dumps(data)
 
 if __name__ == "__main__":
     app.debug = True
