@@ -1,16 +1,24 @@
 from flask import Flask, render_template, request, jsonify
 from flask import send_from_directory, session, url_for, redirect
 from flask_session import Session
+from datetime import timedelta
+from server.user import User
+import urllib
 import json
 import os
 import sys
 import psycopg2
+import pickle
 
 app = Flask(__name__, static_folder="../static/dist", template_folder="../static")
+
 SESSION_TYPE = 'filesystem'
 SECRET_KEY = b'secret-key'
 SESSION_FILE_DIR = '/var/www/startapp.com/flask_session/'
+PERMANENT_SESSION_LIFETIME = timedelta(minutes=20)
+
 app.config.from_object(__name__)
+
 sess = Session()
 sess.init_app(app)
 
@@ -30,6 +38,12 @@ def loginPage():
     if not session.get('logged_in', False):
         return render_template('index.html')
     return redirect('/')
+
+@app.route("/settings")
+def settings():
+    user = request.args.get('user')
+    user = pickle.loads(urllib.unquote(user))
+    return """<p>Hello {USER} you are {TYPE}</p>""".format(USER=user.test, TYPE=user.x)
 
 ###############################################################################
 # REST API
@@ -62,6 +76,10 @@ def add_comment():
     data = request.data
     data = json.loads(data)
     return json.dumps(data)
+
+@app.route("/getUser", methods=['GET'])
+def get_user_data():
+    return json.dumps({'userdata': urllib.quote(pickle.dumps(User()))})
 
 if __name__ == "__main__":
     app.debug = True

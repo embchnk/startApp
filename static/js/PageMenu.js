@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import * as $ from 'jquery';
 import { Menu, Icon, Carousel } from 'antd';
 import { withRouter, browserHistory } from 'react-router-dom';
@@ -21,9 +22,10 @@ class PageMenu extends React.Component {
             });
         } else if (e.key == 'comment') {
             this.props.setActiveWindow('Comment');
+        } else if (e.key == 'home') {
+            this.props.setActiveWindow('MainPage');
         }
     }
-
 
     render() {
         return (
@@ -32,6 +34,9 @@ class PageMenu extends React.Component {
                     mode='horizontal'
                     onClick={this.handleClick}
                 >
+                    <Menu.Item key='home'>
+                        <Icon type='home' /> Home
+                    </Menu.Item>
                     <Menu.Item key='search'>
                         <Icon type="search" />Search
                     </Menu.Item>
@@ -40,6 +45,11 @@ class PageMenu extends React.Component {
                     </Menu.Item>
                     <Menu.Item key="comment">
                         <Icon type="wechat" />Forum
+                    </Menu.Item>
+                    <Menu.Item key='settings'>
+                        <a href={"/settings?user=" + this.props.userData}>
+                            <Icon type='setting' />Settings
+                        </a>
                     </Menu.Item>
                     <Menu.Item key="logout">
                         <Icon type="logout" />Log Out

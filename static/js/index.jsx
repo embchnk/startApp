@@ -9,4 +9,3 @@ const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
 
 const mountNode = document.getElementById('content');
 ReactDOM.render(<App />, mountNode);
-// ReactDOM.render(<WrappedNormalLoginForm />, mountNode);

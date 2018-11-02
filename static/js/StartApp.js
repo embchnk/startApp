@@ -15,7 +15,23 @@ export default class StartApp extends React.Component {
     constructor(props) {
         super(props);
         self = this;
-        this.state = {activeWindow: 'MainPage'};
+        this.state = {
+            activeWindow: 'MainPage',
+            userdata: null
+        };
+    }
+
+    componentDidMount() {
+        const self = this;
+        $.ajax({
+            async: false,
+            url: "/getUser",
+            dataType: "json",
+            contentType: "application/json, charset=utf-8",
+            success: function(result) {
+                self.setState({ userdata: result.userdata });
+            }
+        });
     }
 
     setActiveWindow(value) {
@@ -25,7 +41,10 @@ export default class StartApp extends React.Component {
     render() {
         return (
             <div>
-                <PageMenu setActiveWindow={this.setActiveWindow.bind(this)} />
+                <PageMenu
+                    setActiveWindow={this.setActiveWindow.bind(this)}
+                    userData={this.state.userdata}
+                />
                 {mainComponents[this.state.activeWindow]}
             </div>
         );
