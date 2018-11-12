@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import ReactDomServer from 'react-dom/server';
 import * as $ from 'jquery';
 import { Menu, Icon, Carousel } from 'antd';
 import { withRouter, browserHistory } from 'react-router-dom';
@@ -24,6 +25,8 @@ class PageMenu extends React.Component {
             this.props.setActiveWindow('Comment');
         } else if (e.key == 'home') {
             this.props.setActiveWindow('MainPage');
+        } else if (e.key == 'add-product') {
+            this.props.setActiveWindow('AddProduct');
         }
     }
 
@@ -42,6 +45,9 @@ class PageMenu extends React.Component {
                     </Menu.Item>
                     <Menu.Item key='order'>
                         <Icon type="shopping-cart" />Order
+                    </Menu.Item>
+                    <Menu.Item key='add-product'>
+                        <Icon type="plus" />Add product
                     </Menu.Item>
                     <Menu.Item key="comment">
                         <Icon type="wechat" />Forum

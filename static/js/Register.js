@@ -4,7 +4,7 @@ import * as $ from 'jquery';
 
 const FormItem = Form.Item;
 
-class NormalLoginForm extends React.Component {
+class NormalRegisterForm extends React.Component {
   constructor(props) {
     super(props);
     self = this;
@@ -13,22 +13,31 @@ class NormalLoginForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    $.ajax({
-      url: "/login",
-      dataType: 'json',
-      contentType: "application/json, charset=utf-8",
-      method: "POST",
-      data: JSON.stringify(self.props.form.getFieldsValue()),
-      success: function(result) {
-        if (result.status == 'success') {
-          self.props.history.replace('/');
-        } else {
-          Modal.error({
-            title: "Login failed"
-          }); 
-        }
-      },
-    });
+    let self = this;
+    var password = self.props.form.getFieldsValue().password;
+    var rePassword = self.props.form.getFieldsValue().repeatPassword;
+    if (password !== rePassword) {
+        Modal.error({
+            title: "Passwords are different!",
+        });
+    } else {
+        $.ajax({
+        url: "/register",
+        dataType: 'json',
+        contentType: "application/json, charset=utf-8",
+        method: "POST",
+        data: JSON.stringify(self.props.form.getFieldsValue()),
+        success: function(result) {
+            if (result.status == 'success') {
+            self.props.history.push('/');
+            } else {
+            Modal.error({
+                title: "Registration failed"
+            }); 
+            }
+        },
+        });
+    }
   }
 
   render() {
@@ -50,22 +59,22 @@ class NormalLoginForm extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: true,
+          {getFieldDecorator('repeatPassword', {
+            rules: [{ required: true, message: 'Repeat password' }],
           })(
-            <Checkbox>Remember me</Checkbox>
+            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
           )}
-          <a className="login-form-forgot" href="">Forgot password</a>
+        </FormItem>
+        <FormItem>
           <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
+            Register
           </Button>
-          Or <a href="/registerPage">register now!</a>
         </FormItem>
       </Form>
     );
   }
 }
 
-const LoginForm = Form.create()(NormalLoginForm);
-export default LoginForm; 
+const RegisterForm = Form.create()(NormalRegisterForm);
+export default RegisterForm; 
+

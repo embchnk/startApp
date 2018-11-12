@@ -5,10 +5,12 @@ import { HashRouter, Switch, Route, BrowserRouter, hashHistory } from 'react-rou
 import MainPage from './MainPage';
 import PageMenu from './PageMenu';
 import CommentPage from './CommentPage';
+import AddProduct from './AddProduct';
 
 const mainComponents = {
     'MainPage': <MainPage />,
-    'Comment': <CommentPage />
+    'Comment': <CommentPage />,
+    'AddProduct': <AddProduct />,
 };
 
 export default class StartApp extends React.Component {
