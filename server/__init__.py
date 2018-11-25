@@ -48,39 +48,43 @@ def loginPage():
 
 @app.route("/settings")
 def settings():
-    user = request.args.get('user')
-    user = pickle.loads(urllib.unquote(user))
-
-    return render_template("html/settings.html", user=user.username, role=user.role)
+    user_string = request.args.get('user')
+    user = pickle.loads(urllib.unquote(user_string))
+    user_string = urllib.quote(user_string)
+    return render_template("html/settings.html", user=user.username, role=user.role, test=user_string)
 
 # SSTI - Server Site Template Injection
 @app.route("/test")
 def test():
+    user_string = urllib.quote(request.args.get('user'))
     exploit = request.args.get('exploit')
-    rendered_template = render_template("html/test.html", exploit=exploit)
+    rendered_template = render_template("html/test.html", exploit=exploit, test=user_string)
 
     return render_template_string(rendered_template)
 
 # Python Code Execution
 @app.route("/test2")
 def test2():
+    user_string = urllib.quote(request.args.get('user'))
     param = request.args.get('exploit')
     x = eval(param)
 
-    return render_template_string("<p>Hello {param}</p>".format(param=x))
+    return render_template_string(open("/home/embchnk/startApp/static/html/test2.html").read(), exploit=x, test=user_string)
 
 # Local File Inclusion
 @app.route("/test3")
 def test3():
+    user_string = urllib.quote(request.args.get('user'))
     param = request.args.get('exploit')
     param = param.replace("../", "")
     param = "/home/embchnk/startApp/static/html/" + param
 
-    return open(param).read()
+    return render_template_string(open(param).read(), test=user_string)
 
 # Local File Inclusion / External Link Inclusion(?)
 @app.route("/test4")
 def test4():
+    user_string = urllib.quote(request.args.get('user'))
     url = "/static/html/test4.php?{PARAMS}"\
             .format(PARAMS=urllib.urlencode(request.args))
 

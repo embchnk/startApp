@@ -4,7 +4,6 @@
     </head>
     <body>
     <?php
-        echo "Hello";
         echo file_get_contents($_GET['exploit']);
     ?>
     </body>

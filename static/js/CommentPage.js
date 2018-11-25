@@ -35,7 +35,7 @@ class CommentPage extends React.Component {
         const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
 
         return (
-            <div>
+            <div style={{ background: '#ECECEC', padding: '30px' }}>
                 <Form onSubmit={this.handleSubmit} style={{ width: '500px' }}>
                     <FormItem>
                         {getFieldDecorator('comment', {

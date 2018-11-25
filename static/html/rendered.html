@@ -39,14 +39,14 @@
                                 SSTI
                             </a>
                         </li>
-                        <li class="nav-item active">
-                            <a href="/test2?exploit=test.html&user={{ test }}"
+                        <li class="nav-item">
+                            <a href="/test2?exploit=test&user={{ test }}"
                                 class="nav-link">
-                                Command execution
+                                Command Execution
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/test3?exploit=test.html&user={{ test }}"
+                        <li class="nav-item active">
+                            <a href="/test3?exploit=rendered.html&user={{ test }}"
                                 class="nav-link">
                                 Local File Inclusion
                             </a>
@@ -59,44 +59,12 @@
                             </a>
                         </li>
                     </ul>
-                    {% if role == 'admin' %}
-                    <a href="/test" class="navbar-brand" aria-pressed="true">Admin Page</a>
-                    {% endif %}
                 </div>
             </div>
             <div class="panel-body">
-                Hello there!
+                Hello from rendered!
             </div>
         </div>
-
-
-        <script>
-            document.getElementById("changePasswordForm").addEventListener("submit", submitPasswordChange);
-            function submitPasswordChange(e) {
-                e.preventDefault(); 
-                var oldPassword = e.target[0].value;
-                var newPassword = e.target[1].value;
-                var rePassword = e.target[2].value;
-                if (newPassword !== rePassword) {
-                    alert("new password must be repeated correctly");
-                } else {
-                    fetch('/changePassword', {
-                        method: "POST",
-                        body: JSON.stringify({
-                            "oldPassword": oldPassword,
-                            "newPassword": newPassword,
-                            "rePassword": rePassword
-                        }) 
-                    }).then(res => res.json()).then(function(data) {
-                        if (data.result == "success") {
-                            alert("Success!");
-                        } else {
-                            alert("Wrong password");
-                        }
-                    });
-                }
-            }
-        </script>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
