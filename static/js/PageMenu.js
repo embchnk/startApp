@@ -27,6 +27,8 @@ class PageMenu extends React.Component {
             this.props.setActiveWindow('MainPage');
         } else if (e.key == 'add-product') {
             this.props.setActiveWindow('AddProduct');
+        } else if (e.key == 'search-product') {
+            this.props.setActiveWindow('SearchProduct');
         }
     }
 
@@ -40,11 +42,8 @@ class PageMenu extends React.Component {
                     <Menu.Item key='home'>
                         <Icon type='home' /> Home
                     </Menu.Item>
-                    <Menu.Item key='search'>
+                    <Menu.Item key='search-product'>
                         <Icon type="search" />Search
-                    </Menu.Item>
-                    <Menu.Item key='order'>
-                        <Icon type="shopping-cart" />Order
                     </Menu.Item>
                     <Menu.Item key='add-product'>
                         <Icon type="plus" />Add product

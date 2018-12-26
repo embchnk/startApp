@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title>StartApp Settings</title>
+        <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="static/css/settings.css">
+    </head>
+    <body>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="navbar navbar-expand-lg navbar-light bg-light" role="group" aria-label="Menu">
+                <a class="navbar-brand" href="/">Home</a>
+                <button class="navbar-toggler" type="button"
+                    data-toggle="collapse" data-target="#navbarNav"
+                    aria-control="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggle-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/settings?user={{ user_string }}" class="nav-link">
+                                Settings
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="/ssti?exploit=user_string&user={{ user_string }}" class="nav-link">SSTI</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/commandExecution?exploit=1&user={{ user_string }}"
+                                class="nav-link">
+                                Command execution
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/localFileInclusion?exploit=rendered.html&user={{ user_string }}"
+                                class="nav-link">
+                                Local File Inclusion
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/fileLinkInclusion?exploit=php_get.html&user={{ user_string }}"
+                                class="nav-link" target="_blank"
+                                rel="noopener noreferrer">
+                                    [Local File/External Link] Inclusion
+                            </a>
+                        </li>
+                    </ul>
+                    {% if role == 'admin' %}
+                    <a href="/test" class="navbar-brand" aria-pressed="true">Admin Page</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="panel-body">
+                {{ exploit }}
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>

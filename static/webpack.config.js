@@ -10,6 +10,7 @@ const webpack = require('webpack')
 
 const config = {
     entry: __dirname + '/js/index.jsx',
+    mode: 'development',
     output: {
         // path: __dirname + '/dist',
         path : path.resolve(__dirname, 'dist'),

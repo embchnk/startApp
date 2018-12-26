@@ -9,8 +9,9 @@ class CommentPage extends React.Component {
     constructor(props) {
         super(props);
         self = this;
-        self.state = { comment: null };
+        self.state = { comments: null };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.getComments = this.getComments.bind(this);
     }
 
     handleSubmit(e) {
@@ -19,6 +20,7 @@ class CommentPage extends React.Component {
         $.ajax({
             url: '/addComment',
             method: 'POST',
+            async: false,
             dataType: 'json',
             contentType: "application/json, charset=utf-8",
             data: JSON.stringify({comment: comment}),
@@ -27,8 +29,39 @@ class CommentPage extends React.Component {
             }
         });
         this.setState({
-            comment: comment
-        })
+            comments: this.getComments()
+        });
+    }
+
+    getComments() {
+        var self = this;
+        $.ajax({
+            url: '/getComments',
+            async: false,
+            method: 'GET',
+            dataType: 'json',
+            contentType: "application/json, charset=utf-8",
+            success: function(result) {
+                self.result = result.comments;
+                var i;
+            }
+        });
+        let content = <div>{
+            self.result.map((item) => {
+                let field = <Card>
+                    <div> login: {item[0]} </div>
+                    <div dangerouslySetInnerHTML={{ __html: item[1] }} />
+                </Card>;
+                return field;
+            }) 
+        }
+        </div>;
+
+        return content;
+    }
+
+    componentDidMount() {
+        this.setState({ comments: this.getComments() });
     }
 
     render() {
@@ -48,8 +81,8 @@ class CommentPage extends React.Component {
                         <Button htmlType="submit">Add</Button>
                     </FormItem>
                 </Form>
-                <Card title='Comment'>
-                    <div dangerouslySetInnerHTML={{ __html: this.state.comment }} />
+                <Card title="Comments">
+                    { this.state.comments }
                 </Card>
             </div>
         );

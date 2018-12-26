@@ -51,41 +51,50 @@ def settings():
     user_string = request.args.get('user')
     user = pickle.loads(urllib.unquote(user_string))
     user_string = urllib.quote(user_string)
-    return render_template("html/settings.html", user=user.username, role=user.role, test=user_string)
+    return render_template(
+        "html/settings.html", user=user.username,
+        role=user.role, user_string=user_string
+    )
 
 # SSTI - Server Site Template Injection
-@app.route("/test")
-def test():
+@app.route("/ssti")
+def ssti():
     user_string = urllib.quote(request.args.get('user'))
     exploit = request.args.get('exploit')
-    rendered_template = render_template("html/test.html", exploit=exploit, test=user_string)
+    rendered_template = render_template(
+        "html/ssti.html", exploit=exploit, user_string=user_string
+    )
 
     return render_template_string(rendered_template)
 
 # Python Code Execution
-@app.route("/test2")
-def test2():
+@app.route("/commandExecution")
+def command_execution():
     user_string = urllib.quote(request.args.get('user'))
     param = request.args.get('exploit')
     x = eval(param)
 
-    return render_template_string(open("/home/embchnk/startApp/static/html/test2.html").read(), exploit=x, test=user_string)
+    return render_template_string(
+        open("/home/embchnk/startApp/static/html/command_execution.html").read(),
+        exploit=x,
+        user_string=user_string
+    )
 
 # Local File Inclusion
-@app.route("/test3")
-def test3():
+@app.route("/localFileInclusion")
+def local_file_inclusion():
     user_string = urllib.quote(request.args.get('user'))
     param = request.args.get('exploit')
     param = param.replace("../", "")
     param = "/home/embchnk/startApp/static/html/" + param
 
-    return render_template_string(open(param).read(), test=user_string)
+    return render_template_string(open(param).read(), user_string=user_string)
 
 # Local File Inclusion / External Link Inclusion(?)
-@app.route("/test4")
-def test4():
+@app.route("/fileLinkInclusion")
+def file_link_inclusion():
     user_string = urllib.quote(request.args.get('user'))
-    url = "/static/html/test4.php?{PARAMS}"\
+    url = "/static/html/file_link_inclusion.php?{PARAMS}"\
             .format(PARAMS=urllib.urlencode(request.args))
 
     return redirect(url)
@@ -105,18 +114,19 @@ def login():
     data = json.loads(data)
     with psycopg2.connect(CONNECTION_DATA) as conn:
         with closing(conn.cursor()) as cur:
-            cur.execute("SELECT login, password FROM site_user WHERE login = '{}'"
+            cur.execute("SELECT login, password, role FROM site_user WHERE login = '{}'"
                 .format(data['userName']))
             result = cur.fetchall()
     if not result:
         return json.dumps({"status": "Wrong username"})
     username = result[0][0]
     password = result[0][1]
+    role = result[0][2]
     input_pass = hashlib.md5(data['password']).hexdigest()
     if password == input_pass:
         session['logged_in'] = True
         session['username'] = username
-        session['role'] = "standard-user"
+        session['role'] = role
         return json.dumps({"status": "success"})
     else:
         return json.dumps({"status": "Wrong password"})
@@ -125,6 +135,17 @@ def login():
 def add_comment():
     data = request.data
     data = json.loads(data)
+
+    with psycopg2.connect(CONNECTION_DATA) as conn:
+        with closing(conn.cursor()) as cur:
+            cur.execute("SELECT id FROM site_user WHERE login = '{USERNAME}'".format(USERNAME=session['username']))
+            id = cur.fetchall()[0][0]
+            cur.execute(
+                "INSERT INTO comment (comment, user_id) VALUES ('{COMMENT}', '{ID}')"
+                .format(COMMENT=data['comment'], ID=id)
+            )
+            conn.commit()
+
     return json.dumps(data)
 
 @app.route("/getUser", methods=['GET'])
@@ -156,6 +177,15 @@ def add_product():
         owner=prod_details['owner'],
         price=prod_details['price']
     )
+
+    with psycopg2.connect(CONNECTION_DATA) as conn:
+        with closing(conn.cursor()) as cur:
+            cur.execute(
+                "INSERT INTO product (name, price) VALUES ('{NAME}', '{PRICE}')"
+                .format(NAME=product.name, PRICE=product.price)
+            )
+            conn.commit()
+
     return "{NAME};{OWNER};{PRICE}".format(
         NAME=product.name, OWNER=product.owner, PRICE=product.price
     )
@@ -168,13 +198,14 @@ def register():
     with psycopg2.connect(CONNECTION_DATA) as conn:
         with closing(conn.cursor()) as cur:
             cur.execute(
-                "INSERT INTO site_user (login, password) VALUES ('{USERNAME}', '{PASSWORD}') RETURNING login"
+                "INSERT INTO site_user (login, password, role)"
+                "VALUES ('{USERNAME}', '{PASSWORD}', 'standard-user') RETURNING login"
                 .format(USERNAME=data['userName'], PASSWORD=password)
             )
             conn.commit()
             result = cur.fetchall()
 
-    return "{result}".format(result=result)
+    return json.dumps({'status': 'success'})
 
 @app.route("/changePassword", methods=['POST'])
 def change_password():
@@ -208,6 +239,16 @@ def find_product():
             results = cur.fetchall()
 
     return ", ".join(str(result) for result in results)
+
+@app.route("/getComments")
+def get_comments():
+    with psycopg2.connect(CONNECTION_DATA) as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT u.login, c.comment FROM site_user u JOIN comment c ON u.id = c.user_id")
+            results = cur.fetchall()
+
+    comments = json.dumps({"comments": results})
+    return comments
 
 
 if __name__ == "__main__":

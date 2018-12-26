@@ -6,11 +6,13 @@ import MainPage from './MainPage';
 import PageMenu from './PageMenu';
 import CommentPage from './CommentPage';
 import AddProduct from './AddProduct';
+import SearchProduct from './SearchProduct';
 
 const mainComponents = {
     'MainPage': <MainPage />,
     'Comment': <CommentPage />,
     'AddProduct': <AddProduct />,
+    'SearchProduct': <SearchProduct />,
 };
 
 export default class StartApp extends React.Component {
