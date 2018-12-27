@@ -48,8 +48,7 @@ class CommentPage extends React.Component {
         });
         let content = <div>{
             self.result.map((item) => {
-                let field = <Card>
-                    <div> login: {item[0]} </div>
+                let field = <Card title={item[0]}>
                     <div dangerouslySetInnerHTML={{ __html: item[1] }} />
                 </Card>;
                 return field;
@@ -69,20 +68,30 @@ class CommentPage extends React.Component {
 
         return (
             <div style={{ background: '#ECECEC', padding: '30px' }}>
-                <Form onSubmit={this.handleSubmit} style={{ width: '500px' }}>
-                    <FormItem>
-                        {getFieldDecorator('comment', {
-                         rules: [{message: 'Add comment'}]
-                        })(
-                        <TextArea rows={10} style={{ margin: '20px' }} />
-                        )}
-                    </FormItem>
-                    <FormItem>
-                        <Button htmlType="submit">Add</Button>
-                    </FormItem>
-                </Form>
-                <Card title="Comments">
+                <Card
+                    title="Comments"
+                    bordered={false}
+                    style={{ background: '#ECECEC' }}
+                >
                     { this.state.comments }
+                </Card>
+                <Card
+                    title="Add comment"
+                    bordered={false}
+                    style={{ background: '#ECECEC' }}
+                >
+                    <Form onSubmit={this.handleSubmit} style={{ width: '500px' }}>
+                        <FormItem>
+                            {getFieldDecorator('comment', {
+                            rules: [{message: 'Add comment'}]
+                            })(
+                            <TextArea rows={10} style={{ margin: '20px' }} />
+                            )}
+                        </FormItem>
+                        <FormItem>
+                            <Button htmlType="submit">Add</Button>
+                        </FormItem>
+                    </Form>
                 </Card>
             </div>
         );

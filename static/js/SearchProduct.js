@@ -38,7 +38,6 @@ class SearchProduct extends React.Component {
             method: 'GET',
             async: false,
             success: function(result) {
-                console.log(result);
                 self.setState({ product: result });
             }
         });
@@ -78,7 +77,11 @@ class SearchProduct extends React.Component {
                         </FormItem>
                     </Form>
                 </Card>
-                <Card title="Product">
+                <Card
+                    title="Product"
+                    bordered={false}
+                    style={{ width: 400 }}
+                >
                     { this.state.product }
                 </Card>
             </div>

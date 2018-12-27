@@ -43,8 +43,9 @@ class NormalRegisterForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-        <div>
-            <a href="/loginPage">Back</a>
+        <div
+            style={{ padding: '200px' }}
+        >
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
                 {getFieldDecorator('userName', {
@@ -72,6 +73,7 @@ class NormalRegisterForm extends React.Component {
                     Register
                 </Button>
                 </FormItem>
+                <a href="/loginPage"><Button className="login-form-button">Back</Button></a>
             </Form>
         </div>
     );

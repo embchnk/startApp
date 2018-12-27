@@ -247,7 +247,7 @@ def get_comments():
             cur.execute("SELECT u.login, c.comment FROM site_user u JOIN comment c ON u.id = c.user_id")
             results = cur.fetchall()
 
-    comments = json.dumps({"comments": results})
+    comments = json.dumps({"comments": results[::-1]})
     return comments
 
 
