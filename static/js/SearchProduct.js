@@ -82,7 +82,7 @@ class SearchProduct extends React.Component {
                     bordered={false}
                     style={{ width: 400 }}
                 >
-                    { this.state.product }
+                    <div dangerouslySetInnerHTML={{ __html: this.state.product }} />
                 </Card>
             </div>
         );

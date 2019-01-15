@@ -181,8 +181,11 @@ def add_product():
     with psycopg2.connect(CONNECTION_DATA) as conn:
         with closing(conn.cursor()) as cur:
             cur.execute(
-                "INSERT INTO product (name, price) VALUES ('{NAME}', '{PRICE}')"
-                .format(NAME=product.name, PRICE=product.price)
+                "INSERT INTO product (name, price, owner) VALUES ('{NAME}', '{PRICE}', '{OWNER}')"
+                .format(
+                    NAME=product.name[:254],
+                    PRICE=product.price[:254],
+                    OWNER=product.owner[:254])
             )
             conn.commit()
 

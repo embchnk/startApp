@@ -1,6 +1,6 @@
 import React from "react";
 import * as $ from 'jquery';
-import { Menu, Icon, Carousel } from 'antd';
+import { Menu, Icon, Card } from 'antd';
 
 export default class MainPage extends React.Component {
     constructor(props) {
@@ -10,12 +10,12 @@ export default class MainPage extends React.Component {
 
     render() {
         return (
-            <div>
-                <Carousel autoplay>
-                    <div><img src="https://static.next-episode.net/tv-shows-images/huge/mr.-robot.jpg" /></div>
-                    <div><img src="https://images-na.ssl-images-amazon.com/images/I/91zqbri8+0L._RI_.jpg" /></div>
-                    <div><img src="https://cdn.geekwire.com/wp-content/uploads/2017/10/mrrobot-630x420.png" /></div>
-                </Carousel>
+            <div style={{ background: '#ECECEC ', padding: '30px' }}>
+                <Card title="Main Page" bordered={false} style={{ width: 300 }}>
+                    <p>That application is project for Engineers Thesis.</p>
+                    <p></p>
+                    <p>Made by Michal Bochnak.</p>
+                </Card>
             </div>
         );
     }
